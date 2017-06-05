@@ -14,13 +14,16 @@ spring:
   cloud:
       consul:
         discovery:
-          prefer-ip-address: true
+          prefer-ip-address: false
+          healthCheckInterval: 15s
         host: 127.0.0.1
         port: 8500
         config:
           enabled: true
           watch:
             enabled: true
+            delay: 3000
+          failFast: false
 security:
   oauth2:
     resource:
