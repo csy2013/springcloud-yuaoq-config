@@ -15,14 +15,16 @@ spring:
   cloud:
     consul:
       discovery:
-        prefer-ip-address: true
-        healthCheckUrl: http://localhost:8181/uaa/health
+        prefer-ip-address: false
+        healthCheckInterval: 15s
       host: 127.0.0.1
       port: 8500
       config:
         enabled: true
         watch:
           enabled: true
+          delay: 3000
+        failFast: false
   datasource:
     url: jdbc:mysql://192.168.42.2:3306/dev?useSSL=false
     username: root
