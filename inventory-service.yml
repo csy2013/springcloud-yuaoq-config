@@ -1,0 +1,61 @@
+spring.profiles.active: development
+---
+spring:
+  profiles: cloud
+  data:
+    neo4j:
+      driver: org.neo4j.ogm.drivers.http.driver.HttpDriver
+      uri:  http://192.168.42.4:7474
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+---
+spring:
+  profiles: development
+  data:
+    neo4j:
+      driver: org.neo4j.ogm.drivers.http.driver.HttpDriver
+      uri:  http://yuaoq.com:7474
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+---
+spring:
+  profiles: docker
+  neo4j:
+    host: ${SPRING_NEO4J_HOST:neo4j}
+    port: ${SPRING_NEO4J_PORT:7474}
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 114.215.147.22
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DOCKER_IP:192.168.99.100}:8761/eureka/
+---
+spring:
+  profiles: test
+  neo4j:
+    host: ${SPRING_NEO4J_HOST:192.168.99.101}
+    port: ${SPRING_NEO4J_PORT:7474}
+eureka:
+  client:
+    enabled: false

@@ -1,0 +1,43 @@
+spring:
+  profiles:
+    active: development
+---
+spring:
+  profiles: development
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        healthCheckUrl: http://localhost:${server.port}/health
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+---
+spring:
+  profiles: cloud
+cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        healthCheckUrl: http://localhost:${server.port}/health
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+---
+spring:
+  profiles: docker
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 114.215.147.22
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DOCKER_IP:192.168.99.100}:8761/eureka/

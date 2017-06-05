@@ -1,0 +1,62 @@
+spring:
+  profiles:
+    active: test
+---
+spring:
+  profiles: development
+  redis:
+    host: yuaoq.com
+    port: 6379
+  jpa:
+    show_sql: false
+    database: MYSQL
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://192.168.99.100:9006/dev?useSSL=false
+    username: root
+    password: root
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+---
+spring:
+  profiles: cloud
+  redis:
+    host: 192.168.42.6
+    port: 6379
+  jpa:
+    show_sql: false
+    database: MYSQL
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://192.168.42.2:3306/dev?useSSL=false
+    username: root
+    password: changsy2015
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        healthCheckUrl: http://localhost:${server.port}/health
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+---
+spring:
+  profiles: test
+  redis:
+    host: localhost
+    port: 6379
+  jpa:
+    database: H2

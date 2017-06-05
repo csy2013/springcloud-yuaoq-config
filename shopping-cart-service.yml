@@ -1,0 +1,113 @@
+spring:
+  profiles:
+    active: development
+---
+spring:
+  profiles: cloud
+  jpa:
+      show_sql: false
+      database: MYSQL
+      generate-ddl: true
+  datasource:
+    url: jdbc:mysql://192.168.42.2:3306/dev?useSSL=false
+    username: root
+    password: changsy2015
+    test-on-borrow: true
+    connection-test-query: select 1
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:8181/uaa/user
+    client:
+      client-id: acme
+      access-token-uri: http://localhost:8787
+  enable-csrf: false
+  ignored: /health
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+---
+spring:
+  profiles: development
+  jpa:
+    show_sql: false
+    database: MYSQL
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://192.168.99.100:9006/dev?useSSL=false
+    username: root
+    password: root
+    test-on-borrow: true
+    connection-test-query: select 1
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+      host: 127.0.0.1
+      port: 8500
+      config:
+        enabled: true
+        watch:
+          enabled: true
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:8181/uaa/user
+    client:
+      client-id: acme
+      access-token-uri: http://localhost:8787
+  enable-csrf: false
+  ignored: /health
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+---
+spring:
+  profiles: docker
+  jpa:
+    show_sql: false
+    database: MYSQL
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://mysql:3306/dev
+    username: root
+    password: dbpass
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://${DOCKER_IP:192.168.99.100}:8181/uaa/user
+    client:
+      client-id: acme
+  enable-csrf: false
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 114.215.147.22
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${DOCKER_IP:192.168.99.100}:8761/eureka/
+---
+spring:
+  application:
+    name: account-service
+  profiles: test
+  jpa:
+    show_sql: false
+    database: H2
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:8181/uaa/user
+    client:
+      client-id: acme
+      access-token-uri: http://yuaoq.com:8787
